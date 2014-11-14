@@ -1,3 +1,8 @@
+This system is mostly a port of delayed_job: http://github.com/collectiveidea/delayed_job
+
+See: https://github.com/aminin/delayed
+
+```
 CREATE TABLE `jobs` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `handler` TEXT NOT NULL,
@@ -7,6 +12,7 @@ CREATE TABLE `jobs` (
 `locked_at` DATETIME NULL,
 `locked_by` VARCHAR(255) NULL,
 `failed_at` DATETIME NULL,
-`error` TEXT NULL,
+`last_error` TEXT NULL,
 `created_at` DATETIME NOT NULL
-) ENGINE = INNODB;
+) ENGINE = INNODB DEFAULT CHARSET = utf8;
+```

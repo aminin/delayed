@@ -1,7 +1,7 @@
 <?php
 
-class HelloWorldJob {
-
+class HelloWorldJob
+{
     public function __construct($name) {
         $this->name = $name;
     }
@@ -9,5 +9,4 @@ class HelloWorldJob {
     public function perform() {
         echo "Hello {$this->name}!\n";
     }
-
 }
