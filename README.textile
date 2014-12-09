@@ -1,5 +1,7 @@
 h1. DJJob
 
+p. TODO: make DJJob capabilities closer to "collectiveidea/delayed_job":http://github.com/collectiveidea/delayed_job
+
 p. DJJob allows PHP web applications to process long-running tasks asynchronously. It is a PHP port of "delayed_job":http://github.com/tobi/delayed_job (developed at Shopify), which has been used in production at SeatGeek since April 2010.
 
 p. Like delayed_job, DJJob uses a @jobs@ table for persisting and tracking pending, in-progress, and failed jobs.
