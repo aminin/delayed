@@ -3,8 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/HelloWorldJob.php';
 
-use AMinin\Delayed\Worker;
 use AMinin\Delayed\Backend\PdoMysql;
+use AMinin\Delayed\Job;
 
 PdoMysql::configureWithOptions(array(
     'driver'   => 'mysql',
@@ -13,11 +13,4 @@ PdoMysql::configureWithOptions(array(
     'user'     => 'root',
     'password' => 'topsecret',
 ));
-
-Worker::setRepository(new PdoMysql);
-
-$worker = new \AMinin\Delayed\Worker(array(
-    'queue' => isset($_SERVER['QUEUE']) ? $_SERVER['QUEUE'] : 'default',
-));
-
-$worker->start();
+Job::setRepository(new PdoMysql);

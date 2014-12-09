@@ -11,6 +11,7 @@ class Monitor extends Base
     private $logFileName;
     private $scriptFileName;
     private $projectRootDir;
+    public $kill = false;
 
     public function __construct($queues, $logFileName, $scriptFileName, $projectRootDir)
     {
@@ -36,7 +37,7 @@ class Monitor extends Base
         $processCount = count($processList);
         $this->log("$processCount workers are alive");
 
-        if (isset($this->data['kill'])) {
+        if ($this->kill) {
             $this->killAll($processList);
             return;
         }
@@ -86,7 +87,6 @@ class Monitor extends Base
     public function spawnWorker($queue)
     {
         $this->log("spawn new worker on queue: $queue");
-        // Директория со скриптами
         chdir($this->projectRootDir);
         if (empty($dir) || empty($this->logFileName)) {
             $this->logFileName = '/dev/null';
@@ -169,7 +169,6 @@ class Monitor extends Base
     public function getVersionDate()
     {
         chdir($this->projectRootDir);
-        // TODO не на всех серверах есть git. Надо сохранять дату обновления в файл
         $versionDate = shell_exec("git log --pretty=format:'%ci' -1");
         return trim($versionDate);
     }

@@ -207,7 +207,7 @@ class PdoMysql extends Base implements RepositoryInterface
             SET    locked_at = NOW(), locked_by = ?
             WHERE  id = ? AND (locked_at IS NULL OR locked_by = ?) AND failed_at IS NULL
             ',
-            [$workerName, $id, $workerName]
+            array($workerName, $id, $workerName)
         );
     }
 
@@ -217,7 +217,7 @@ class PdoMysql extends Base implements RepositoryInterface
 
         $affected = $this->runUpdate(
             "INSERT INTO " . self::$jobsTable . " (handler, queue, run_at, created_at) VALUES(?, ?, ?, NOW())",
-            [serialize($handler), (string)$queue, $run_at]
+            array(serialize($handler), (string)$queue, $run_at)
         );
 
         if ($affected < 1) {
@@ -280,7 +280,7 @@ class PdoMysql extends Base implements RepositoryInterface
         $prepareDateTime = function($dateTime) use ($format) {
             return ($dateTime instanceof \DateTime) ? $dateTime->format($format) : $dateTime;
         };
-        return [
+        return array(
             $job->getAttempts(),
             $prepareDateTime($job->getFailedAt()),
             serialize($job->getHandler()),
@@ -289,7 +289,7 @@ class PdoMysql extends Base implements RepositoryInterface
             $job->getLockedBy(),
             $job->getQueue(),
             $prepareDateTime($job->getRunAt()),
-        ];
+        );
     }
 
     /**
