@@ -3,7 +3,7 @@
 Delayed allows PHP web applications to process long-running tasks asynchronously. It is a PHP 
 port of [delayed_job]
 
-Like delayed_job, Delayed uses a @jobs@ table for persisting and tracking pending, in-progress, and failed jobs.
+Like delayed_job, Delayed uses a `jobs` table for persisting and tracking pending, in-progress, and failed jobs.
 
 [delayed_job]: http://github.com/collectiveidea/delayed_job
 
@@ -88,6 +88,7 @@ class Email {
         Job::enqueue($this, "email");
     }
 }
+```
 
 Because `Email` has a `perform` method, all instances of the email class are also jobs.
 
@@ -95,7 +96,7 @@ Because `Email` has a `perform` method, all instances of the email class are als
 
 Running a worker is as simple as:
 
-```
+```php
 use AMinin\Delayed\Worker;
 
 $worker = new Worker(array(
