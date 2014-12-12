@@ -35,9 +35,9 @@ class Job extends Base implements JobInterface
     {
         # pull the handler from the db
         $handler = $this->getHandler();
-        if (!is_object($handler)) {
+        if (!is_object($handler) || !method_exists($handler, 'perform')) {
             $msg = "[JOB] bad handler for job::{$this->id}";
-            $this->finishWithError($msg);
+            $this->finishWithError($msg, false);
             return false;
         }
         # run the handler
@@ -52,7 +52,7 @@ class Job extends Base implements JobInterface
 
             $msg = "Caught DJRetryException \"{$e->getMessage()}\" on attempt $attempts/{$this->maxAttempts}.";
 
-            if ($attempts == $this->maxAttempts) {
+            if ($attempts >= $this->maxAttempts) {
                 $msg = "[JOB] job::{$this->id} $msg Giving up.";
                 $this->finishWithError($msg);
             } else {
@@ -95,13 +95,17 @@ class Job extends Base implements JobInterface
         $this->logJob("[JOB] completed job::{$this->id}", self::INFO);
     }
 
-    public function finishWithError($error)
+    public function finishWithError($error, $retry = true)
     {
         $this->lastError = $error;
         $this->logJob($error, self::ERROR);
         $this->logJob("[JOB] failure in job::{$this->id}", self::ERROR);
         $this->releaseLock(false);
-        $this->retryLater(self::$delayBeforeRetryAfterError);
+        if ($retry && $this->attempts < $this->maxAttempts) {
+            $this->retryLater(self::$delayBeforeRetryAfterError);
+        } else {
+            $this->fail();
+        }
     }
 
     public function fail() {

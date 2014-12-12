@@ -67,7 +67,7 @@ interface JobInterface
      */
     public function acquireLock($workerName);
     public function fail();
-    public function finishWithError($error);
+    public function finishWithError($error, $retry = true);
     public function retryLater($delay);
     public function run();
     public function save();
